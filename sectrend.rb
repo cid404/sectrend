@@ -3,13 +3,6 @@ require 'nokogiri'
 require 'date'
 require 'twitter'
 
-#h = {"comex" => ["soldiers are reluctant to kill"],
-#    "mikko" => ["It seems that the Flame certificate breach is indeed now call","How Flame forged Certs: http://t.co/Fps3wjPe"],
-#    "securityshell" => ["http://t.co/lcb9w82k World's biggest Linklist for Security and "],
-#    "e_kaspersky" => ["#TheFlame MitM injection method is even more effective than exploiting a 0-day vulnerability http://t.co/sApoY88O"],
-#    "prettysure123411" => "Something"}
-#
-
 SLEEPER = 1800
 
 def login
@@ -84,10 +77,14 @@ def run
   @tab=[]
   login
   while true
-    h = get_trends
-    list = find_ids(h)
-    retweet_all(list)
-    puts 'Sleeping...'
+    begin
+      h = get_trends
+      list = find_ids(h)
+      retweet_all(list)
+      puts 'Sleeping...'
+    rescue Errno::ETIMEDOUT
+      puts 'Timeout!'
+    end
     sleep(SLEEPER)+rand(100)
   end
 end
