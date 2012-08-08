@@ -36,6 +36,8 @@ def find_ids(h)
       end
     rescue Twitter::Error => e
       puts "ERROR!", e.message
+    rescue Zlib::GzipFile::Error
+      puts "Ahoy, I'm a Twitter gem bug, just ignore me  >_<"
     end
   end
   list
